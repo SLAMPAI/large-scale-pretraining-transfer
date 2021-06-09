@@ -1,0 +1,19 @@
+data:
+  backend: native
+  type: covidx_cxr2
+  train_dir: datasets/COVIDx-CXR2
+  val_dir: datasets/COVIDx-CXR2
+  workers: 8
+  nb_classes: 2
+  augmentation:
+    type: bit
+  oversampling: true
+optim:
+    type: SGD_AGC
+    momentum: 0.9
+    base_lr: 0.001
+    batch: 128
+    batch_split: 32
+    weight_decay: 0
+logging:
+    eval_every: 100

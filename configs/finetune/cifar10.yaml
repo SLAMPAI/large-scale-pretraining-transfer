@@ -1,0 +1,17 @@
+data:
+  backend: native
+  type: cifar10
+  workers: 8
+  nb_classes: 10
+  augmentation:
+    type: bit
+optim:
+    type: SGD_AGC
+    momentum: 0.9
+    base_lr: 0.001
+    batch: 128
+    batch_split: 2
+    weight_decay: 0
+
+logging:
+    eval_every: 100

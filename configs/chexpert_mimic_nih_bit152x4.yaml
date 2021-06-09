@@ -1,0 +1,52 @@
+# sbatch -N 16 --partition booster -t 08:00:00 scripts/juwels_booster.sh pretrain.py --config-file configs/chexpert_bit152x4.yaml 
+data:
+    backend: threads
+    type: merge
+    types: chexpert,mimic,nih
+    workers: 24
+    train_dir: 
+        chexpert: "datasets/CheXpert-v1.0"
+        mimic: "datasets/mimic/mimic-cxr-jpg/2.0.0"
+        nih: "datasets/NIH-ChestXRay-14"
+    val_dir: 
+        chexpert: "datasets/CheXpert-v1.0"
+        mimic: "datasets/mimic/mimic-cxr-jpg/2.0.0"
+        nih: "datasets/NIH-ChestXRay-14"
+    nb_classes: 7 # intersection of labels
+    mean: [0.5, 0.5, 0.5]
+    std: [0.5, 0.5, 0.5]
+    augmentation:
+        type: chexpert
+        aug: cohen_chexpert_aug
+    image_size: 224
+
+mixed_precision:
+    enabled: true
+    backend: native
+
+seed: 42
+
+optim:
+    type: SGD_AGC
+    momentum: 0.9
+    base_lr: 0.01
+    base_batch_size: 256
+    train_local_batch_size: 16
+    val_local_batch_size: 64
+    epochs: 90
+    warmup_epochs: 15
+    weight_decay: 0.0001
+    gradient_accumulate: 1
+    lr_scheduler:
+        type: step
+
+model:
+    type: BiT-S-R152x4
+
+
+logging:
+    save_checkpoint: true
+    validate: true
+
+horovod:
+    fp16_allreduce: false

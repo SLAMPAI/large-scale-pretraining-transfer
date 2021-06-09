@@ -1,0 +1,41 @@
+data:
+    backend: dali
+    type: tfrecords
+    workers: 8
+    train_dir: datasets/imagenet-21K/full_tfrecords_for_classification 
+    val_dir: null
+    nb_classes: 21842
+    augmentation:
+        type: random_resized_crop
+    image_size: 224
+
+mixed_precision:
+    enabled: true
+    backend: native
+
+seed: 42
+
+optim:
+    type: SGD_AGC
+    momentum: 0.9
+    base_lr: 0.01
+    base_batch_size: 256
+    train_local_batch_size: 32
+    val_local_batch_size: 256
+    epochs: 90
+    warmup_epochs: 2
+    weight_decay: 0.0001
+    gradient_accumulate: 1
+    lr_scheduler:
+        type: step
+
+model:
+    type: BiT-M-R50x1
+
+
+logging:
+    save_checkpoint: true
+    validate: false
+
+horovod:
+    fp16_allreduce: false

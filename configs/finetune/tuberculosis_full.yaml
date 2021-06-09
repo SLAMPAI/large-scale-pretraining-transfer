@@ -1,0 +1,18 @@
+data:
+  backend: native
+  type: tuberculosis
+  train_dir: datasets/Tuberculosis_dataset/ChinaSet_AllFiles/ChinaSet_AllFiles/CXR_png,/p/project/covidnetx/datasets/Tuberculosis_dataset/Montgomery/MontgomerySet/CXR_png
+  val_dir: datasets/Tuberculosis_dataset/ChinaSet_AllFiles/ChinaSet_AllFiles/CXR_png,/p/project/covidnetx/datasets/Tuberculosis_dataset/Montgomery/MontgomerySet/CXR_png
+  workers: 8
+  nb_classes: 2
+  augmentation:
+    type: bit
+optim:
+    type: SGD_AGC
+    momentum: 0.9
+    base_lr: 0.001
+    batch: 128
+    batch_split: 32
+    weight_decay: 0
+logging:
+    eval_every: 100

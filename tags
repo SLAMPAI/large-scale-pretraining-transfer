@@ -1,0 +1,290 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+AddIndexIter	./transfer_learning/finetuning/fewshot.py	/^class AddIndexIter(torch.utils.data.dataloader._SingleProcessDataLoaderIter):$/;"	c
+BasePipeline	./transfer_learning/dataloaders/dali.py	/^class BasePipeline(Pipeline):$/;"	c
+COVIDX_CXR2	./transfer_learning/datasets/covidx_cxr2.py	/^class COVIDX_CXR2(Dataset):$/;"	c
+CachedCaffeLMDB	./transfer_learning/datasets/caffe_lmdb.py	/^class CachedCaffeLMDB:$/;"	c
+CaffeLMDB	./transfer_learning/datasets/caffe_lmdb.py	/^class CaffeLMDB:$/;"	c
+CaffeLMDBMultiLabel	./transfer_learning/datasets/caffe_lmdb.py	/^class CaffeLMDBMultiLabel:$/;"	c
+ChexPert	./transfer_learning/datasets/chexpert.py	/^class ChexPert(Dataset):$/;"	c
+ChexPert_	./transfer_learning/datasets/chexpert.py	/^class ChexPert_:$/;"	c
+Chrono	./transfer_learning/finetuning/lbtoolbox.py	/^class Chrono:$/;"	c
+DALIDataLoader	./transfer_learning/dataloaders/dali.py	/^class DALIDataLoader(object):$/;"	c
+DataLoader	./transfer_learning/dataloaders/dataloader_threads.py	/^class DataLoader(object):$/;"	c
+DummyAutoCast	./pretrain.py	/^class DummyAutoCast():$/;"	c
+F	./scripts/datasets/flowers_to_image_folder.py	/^        F = os.path.join(class_folder, os.path.basename(fname))$/;"	v
+HOROVOD	./transfer_learning/dataloaders/builder.py	/^    HOROVOD = False$/;"	v
+HOROVOD	./transfer_learning/dataloaders/builder.py	/^    HOROVOD = True$/;"	v
+HOROVOD	./transfer_learning/datasets/builder.py	/^    HOROVOD = False$/;"	v
+HOROVOD	./transfer_learning/datasets/builder.py	/^    HOROVOD = True$/;"	v
+ImageFolderNumpy	./transfer_learning/datasets/image_folder_numpy.py	/^class ImageFolderNumpy(ImageFolder):$/;"	c
+KNOWN_MODELS	./transfer_learning/models/bit.py	/^KNOWN_MODELS = OrderedDict([$/;"	v
+Loader	./transfer_learning/dataloaders/builder.py	/^        class Loader:$/;"	c	function:build_dataloader
+MIMIC	./transfer_learning/datasets/mimic.py	/^class MIMIC(Dataset):$/;"	c
+ManagerWatchdog	./transfer_learning/dataloaders/worker.py	/^    class ManagerWatchdog(object):$/;"	c
+Merge	./transfer_learning/datasets/builder.py	/^class Merge:$/;"	c
+Metric	./pretrain.py	/^class Metric(object):$/;"	c
+NIH	./transfer_learning/datasets/nih.py	/^class NIH(Dataset):$/;"	c
+PadChest	./transfer_learning/datasets/padchest.py	/^class PadChest(Dataset):$/;"	c
+Pets	./transfer_learning/datasets/pets.py	/^class Pets(Dataset):$/;"	c
+PreActBottleneck	./transfer_learning/models/bit.py	/^class PreActBottleneck(nn.Module):$/;"	c
+RATIO_TRAIN	./transfer_learning/datasets/tuberculosis.py	/^RATIO_TRAIN = 0.85$/;"	v
+ResNetV2	./transfer_learning/models/bit.py	/^class ResNetV2(nn.Module):$/;"	c
+SEED	./transfer_learning/datasets/padchest.py	/^SEED = 42$/;"	v
+SEED	./transfer_learning/datasets/tuberculosis.py	/^SEED = 42$/;"	v
+SGD_AGC	./transfer_learning/optim/sgd_agc.py	/^class SGD_AGC(Optimizer):$/;"	c
+ShuffledDataset	./transfer_learning/finetuning/fewshot.py	/^class ShuffledDataset:$/;"	c
+SingleLabelFromMultiLabel	./finetune.py	/^class SingleLabelFromMultiLabel:$/;"	c
+StdConv2d	./transfer_learning/models/bit.py	/^class StdConv2d(nn.Conv2d):$/;"	c
+TRAIN_RATIO	./transfer_learning/datasets/padchest.py	/^TRAIN_RATIO = 0.9$/;"	v
+Timer	./transfer_learning/finetuning/lbtoolbox.py	/^class Timer:$/;"	c
+Tuberculosis	./transfer_learning/datasets/tuberculosis.py	/^class Tuberculosis(Dataset):$/;"	c
+Uninterrupt	./transfer_learning/finetuning/lbtoolbox.py	/^class Uninterrupt:$/;"	c
+_DataLoaderIter	./transfer_learning/dataloaders/dataloader_threads.py	/^class _DataLoaderIter(object):$/;"	c
+__del__	./transfer_learning/dataloaders/dataloader_threads.py	/^    def __del__(self):$/;"	m	class:_DataLoaderIter	file:
+__enter__	./pretrain.py	/^    def __enter__(self):$/;"	m	class:DummyAutoCast	file:
+__enter__	./transfer_learning/finetuning/lbtoolbox.py	/^  def __enter__(self):$/;"	m	class:Timer	file:
+__enter__	./transfer_learning/finetuning/lbtoolbox.py	/^  def __enter__(self):$/;"	m	class:Uninterrupt	file:
+__exit__	./pretrain.py	/^    def __exit__(self, *args, **kwargs):$/;"	m	class:DummyAutoCast	file:
+__exit__	./transfer_learning/finetuning/lbtoolbox.py	/^  def __exit__(self, exc_type, exc_value, traceback):$/;"	m	class:Timer	file:
+__exit__	./transfer_learning/finetuning/lbtoolbox.py	/^  def __exit__(self, type_, value, tb):$/;"	m	class:Uninterrupt	file:
+__getitem__	./finetune.py	/^    def __getitem__(self, idx):$/;"	m	class:SingleLabelFromMultiLabel	file:
+__getitem__	./transfer_learning/datasets/builder.py	/^    def __getitem__(self, idx):$/;"	m	class:Merge	file:
+__getitem__	./transfer_learning/datasets/caffe_lmdb.py	/^    def __getitem__(self, i):$/;"	m	class:CachedCaffeLMDB	file:
+__getitem__	./transfer_learning/datasets/caffe_lmdb.py	/^    def __getitem__(self, i):$/;"	m	class:CaffeLMDB	file:
+__getitem__	./transfer_learning/datasets/caffe_lmdb.py	/^    def __getitem__(self, i):$/;"	m	class:CaffeLMDBMultiLabel	file:
+__getitem__	./transfer_learning/datasets/chexpert.py	/^    def __getitem__(self, idx):$/;"	m	class:ChexPert	file:
+__getitem__	./transfer_learning/datasets/chexpert.py	/^    def __getitem__(self, idx):$/;"	m	class:ChexPert_	file:
+__getitem__	./transfer_learning/datasets/covidx_cxr2.py	/^    def __getitem__(self, index):$/;"	m	class:COVIDX_CXR2	file:
+__getitem__	./transfer_learning/datasets/image_folder_numpy.py	/^    def __getitem__(self, idx):$/;"	m	class:ImageFolderNumpy	file:
+__getitem__	./transfer_learning/datasets/mimic.py	/^    def __getitem__(self, idx):$/;"	m	class:MIMIC	file:
+__getitem__	./transfer_learning/datasets/nih.py	/^    def __getitem__(self, idx):$/;"	m	class:NIH	file:
+__getitem__	./transfer_learning/datasets/padchest.py	/^    def __getitem__(self, idx):$/;"	m	class:PadChest	file:
+__getitem__	./transfer_learning/datasets/pets.py	/^    def __getitem__(self, index):$/;"	m	class:Pets	file:
+__getitem__	./transfer_learning/datasets/tuberculosis.py	/^    def __getitem__(self, index):$/;"	m	class:Tuberculosis	file:
+__getitem__	./transfer_learning/finetuning/fewshot.py	/^    def __getitem__(self, i):$/;"	m	class:ShuffledDataset	file:
+__getstate__	./transfer_learning/dataloaders/dataloader_threads.py	/^    def __getstate__(self):$/;"	m	class:_DataLoaderIter	file:
+__init__	./finetune.py	/^    def __init__(self, dataset, labels):$/;"	m	class:SingleLabelFromMultiLabel
+__init__	./pretrain.py	/^    def __init__(self, name):$/;"	m	class:Metric
+__init__	./transfer_learning/dataloaders/builder.py	/^            def __init__(self, loader):$/;"	m	class:build_dataloader.Loader
+__init__	./transfer_learning/dataloaders/dali.py	/^    def __init__($/;"	m	class:BasePipeline
+__init__	./transfer_learning/dataloaders/dali.py	/^    def __init__(self, pipeline, batch_size):$/;"	m	class:DALIDataLoader
+__init__	./transfer_learning/dataloaders/dataloader_threads.py	/^    def __init__(self, dataset, batch_size=1, shuffle=False, sampler=None,$/;"	m	class:DataLoader
+__init__	./transfer_learning/dataloaders/dataloader_threads.py	/^    def __init__(self, loader):$/;"	m	class:_DataLoaderIter
+__init__	./transfer_learning/dataloaders/worker.py	/^        def __init__(self):$/;"	m	class:ManagerWatchdog
+__init__	./transfer_learning/datasets/builder.py	/^    def __init__(self, datasets, label_inds=None):$/;"	m	class:Merge
+__init__	./transfer_learning/datasets/caffe_lmdb.py	/^    def __init__(self, root, rank=0, world_size=1, transform=None, target_transform=None, max_readers=1):$/;"	m	class:CachedCaffeLMDB
+__init__	./transfer_learning/datasets/caffe_lmdb.py	/^    def __init__(self, root, rank=0, world_size=1, transform=None, target_transform=None, max_readers=1, cache=False):$/;"	m	class:CaffeLMDB
+__init__	./transfer_learning/datasets/caffe_lmdb.py	/^    def __init__(self, root, rank=0, world_size=1, transform=None, target_transform=None, max_readers=1, nb_classes=1000):$/;"	m	class:CaffeLMDBMultiLabel
+__init__	./transfer_learning/datasets/chexpert.py	/^    def __init__(self, path, split="train", aug=None, transform=None, views=["AP", "PA"], unique_patients=False):$/;"	m	class:ChexPert
+__init__	./transfer_learning/datasets/chexpert.py	/^    def __init__(self, path, split="train", aug=None, transform=None, views=["AP", "PA"], unique_patients=False):$/;"	m	class:ChexPert_
+__init__	./transfer_learning/datasets/covidx_cxr2.py	/^    def __init__(self, folder, train=True, transform=None):$/;"	m	class:COVIDX_CXR2
+__init__	./transfer_learning/datasets/mimic.py	/^    def __init__(self, path, version="chexpert", split="train", aug=None, transform=None, views=["AP", "PA"], unique_patients=False):$/;"	m	class:MIMIC
+__init__	./transfer_learning/datasets/nih.py	/^    def __init__(self, path, train=True, aug=None, transform=None, views=["AP", "PA"], unique_patients=False):$/;"	m	class:NIH
+__init__	./transfer_learning/datasets/padchest.py	/^    def __init__(self, path, train=True, aug=None, transform=None, views=["AP", "PA"], unique_patients=False):$/;"	m	class:PadChest
+__init__	./transfer_learning/datasets/pets.py	/^    def __init__(self, folder, train=True, transform=None):$/;"	m	class:Pets
+__init__	./transfer_learning/datasets/tuberculosis.py	/^    def __init__(self, folder, train=True, transform=None):$/;"	m	class:Tuberculosis
+__init__	./transfer_learning/finetuning/fewshot.py	/^    def __init__(self, dataset, random_state=None):$/;"	m	class:ShuffledDataset
+__init__	./transfer_learning/finetuning/lbtoolbox.py	/^  def __init__(self):$/;"	m	class:Chrono
+__init__	./transfer_learning/finetuning/lbtoolbox.py	/^  def __init__(self, donecb):$/;"	m	class:Timer
+__init__	./transfer_learning/finetuning/lbtoolbox.py	/^  def __init__(self, sigs=(signal.SIGINT, signal.SIGTERM), verbose=False):$/;"	m	class:Uninterrupt
+__init__	./transfer_learning/models/bit.py	/^  def __init__(self, block_units, width_factor, head_size=21843, zero_head=False):$/;"	m	class:ResNetV2
+__init__	./transfer_learning/models/bit.py	/^  def __init__(self, cin, cout=None, cmid=None, stride=1):$/;"	m	class:PreActBottleneck
+__init__	./transfer_learning/optim/sgd_agc.py	/^    def __init__(self, params, lr=required, momentum=0, dampening=0,$/;"	m	class:SGD_AGC
+__initialized	./transfer_learning/dataloaders/dataloader_threads.py	/^    __initialized = False$/;"	v	class:DataLoader
+__iter__	./transfer_learning/dataloaders/builder.py	/^            def __iter__(self):$/;"	m	class:build_dataloader.Loader	file:
+__iter__	./transfer_learning/dataloaders/dali.py	/^    def __iter__(self):$/;"	m	class:DALIDataLoader	file:
+__iter__	./transfer_learning/dataloaders/dataloader_threads.py	/^    def __iter__(self):$/;"	m	class:DataLoader	file:
+__iter__	./transfer_learning/dataloaders/dataloader_threads.py	/^    def __iter__(self):$/;"	m	class:_DataLoaderIter	file:
+__len__	./finetune.py	/^    def __len__(self):$/;"	m	class:SingleLabelFromMultiLabel	file:
+__len__	./transfer_learning/dataloaders/builder.py	/^            def __len__(self):$/;"	m	class:build_dataloader.Loader	file:
+__len__	./transfer_learning/dataloaders/dali.py	/^    def __len__(self):$/;"	m	class:DALIDataLoader	file:
+__len__	./transfer_learning/dataloaders/dataloader_threads.py	/^    def __len__(self):$/;"	m	class:DataLoader	file:
+__len__	./transfer_learning/dataloaders/dataloader_threads.py	/^    def __len__(self):$/;"	m	class:_DataLoaderIter	file:
+__len__	./transfer_learning/datasets/builder.py	/^    def __len__(self):$/;"	m	class:Merge	file:
+__len__	./transfer_learning/datasets/caffe_lmdb.py	/^    def __len__(self):$/;"	m	class:CachedCaffeLMDB	file:
+__len__	./transfer_learning/datasets/caffe_lmdb.py	/^    def __len__(self):$/;"	m	class:CaffeLMDB	file:
+__len__	./transfer_learning/datasets/caffe_lmdb.py	/^    def __len__(self):$/;"	m	class:CaffeLMDBMultiLabel	file:
+__len__	./transfer_learning/datasets/chexpert.py	/^    def __len__(self):$/;"	m	class:ChexPert	file:
+__len__	./transfer_learning/datasets/chexpert.py	/^    def __len__(self):$/;"	m	class:ChexPert_	file:
+__len__	./transfer_learning/datasets/covidx_cxr2.py	/^    def __len__(self):$/;"	m	class:COVIDX_CXR2	file:
+__len__	./transfer_learning/datasets/mimic.py	/^    def __len__(self):$/;"	m	class:MIMIC	file:
+__len__	./transfer_learning/datasets/nih.py	/^    def __len__(self):$/;"	m	class:NIH	file:
+__len__	./transfer_learning/datasets/padchest.py	/^    def __len__(self):$/;"	m	class:PadChest	file:
+__len__	./transfer_learning/datasets/pets.py	/^    def __len__(self):$/;"	m	class:Pets	file:
+__len__	./transfer_learning/datasets/tuberculosis.py	/^    def __len__(self):$/;"	m	class:Tuberculosis	file:
+__len__	./transfer_learning/finetuning/fewshot.py	/^    def __len__(self):$/;"	m	class:ShuffledDataset	file:
+__next__	./transfer_learning/dataloaders/dataloader_threads.py	/^    def __next__(self):$/;"	m	class:_DataLoaderIter	file:
+__setattr__	./transfer_learning/dataloaders/dataloader_threads.py	/^    def __setattr__(self, attr, val):$/;"	m	class:DataLoader	file:
+__setstate__	./transfer_learning/optim/sgd_agc.py	/^    def __setstate__(self, state):$/;"	m	class:SGD_AGC	file:
+__str__	./transfer_learning/finetuning/lbtoolbox.py	/^  def __str__(self, fmt="{:{w}.5f}", dropfirst=False):$/;"	m	class:Chrono	file:
+_done	./transfer_learning/finetuning/lbtoolbox.py	/^  def _done(self, what, t):$/;"	m	class:Chrono
+_get_batch	./transfer_learning/dataloaders/dataloader_threads.py	/^    def _get_batch(self):$/;"	m	class:_DataLoaderIter
+_next_data	./transfer_learning/finetuning/fewshot.py	/^  def _next_data(self):$/;"	m	class:AddIndexIter
+_process_next_batch	./transfer_learning/dataloaders/dataloader_threads.py	/^    def _process_next_batch(self, batch):$/;"	m	class:_DataLoaderIter
+_put_indices	./transfer_learning/dataloaders/dataloader_threads.py	/^    def _put_indices(self):$/;"	m	class:_DataLoaderIter
+_shutdown_workers	./transfer_learning/dataloaders/dataloader_threads.py	/^    def _shutdown_workers(self):$/;"	m	class:_DataLoaderIter
+_worker_loop	./transfer_learning/dataloaders/worker.py	/^def _worker_loop(dataset, index_queue, data_queue, done_event, collate_fn, seed, init_fn, worker_id):$/;"	f
+accuracy	./pretrain.py	/^def accuracy(output, target):$/;"	f
+adjust_learning_rate	./transfer_learning/lr_scheduler/builder.py	/^def adjust_learning_rate(config, nb_iter_per_epoch, epoch, batch_idx, optimizer):$/;"	f
+adjust_learning_rate_cosine	./transfer_learning/lr_scheduler/builder.py	/^def adjust_learning_rate_cosine(config, nb_iter_per_epoch, epoch, batch_idx, optimizer):$/;"	f
+adjust_learning_rate_step	./transfer_learning/lr_scheduler/builder.py	/^def adjust_learning_rate_step(config, nb_iter_per_epoch, epoch, batch_idx, optimizer):$/;"	f
+all_indices	./transfer_learning/finetuning/fewshot.py	/^  all_indices = find_fewshot_indices(dataset, int(sys.argv[1]))$/;"	v
+argparser	./transfer_learning/finetuning/bit_common.py	/^def argparser(known_models):$/;"	f
+args	./pretrain.py	/^    args = parser.parse_args()$/;"	v
+author	./setup.py	/^    author='',$/;"	v
+avg	./pretrain.py	/^    def avg(self):$/;"	m	class:Metric
+avgtime	./transfer_learning/finetuning/lbtoolbox.py	/^  def avgtime(self, what, dropfirst=False):$/;"	m	class:Chrono
+batch_size	./transfer_learning/dataloaders/builder.py	/^            batch_size=train_batch_size,$/;"	v	class:build_dataloader.Loader
+batch_size	./transfer_learning/dataloaders/builder.py	/^            batch_size=val_batch_size,$/;"	v	class:build_dataloader.Loader
+batch_size	./transfer_learning/dataloaders/dali.py	/^    batch_size = params["batch_size"]$/;"	v
+best_val_loss_path	./pretrain.py	/^    best_val_loss_path = os.path.join(log_dir,"best_val_loss")$/;"	v
+build_dali_data_loader_from_caffe_lmdb	./transfer_learning/dataloaders/dali.py	/^def build_dali_data_loader_from_caffe_lmdb($/;"	f
+build_dali_data_loader_from_image_folder	./transfer_learning/dataloaders/dali.py	/^def build_dali_data_loader_from_image_folder($/;"	f
+build_dali_data_loader_from_tfrecords	./transfer_learning/dataloaders/dali.py	/^def build_dali_data_loader_from_tfrecords($/;"	f
+build_dataloader	./transfer_learning/dataloaders/builder.py	/^def build_dataloader(config):$/;"	f
+build_dataset	./transfer_learning/datasets/builder.py	/^def build_dataset(config):$/;"	f
+build_model	./transfer_learning/models/builder.py	/^def build_model(config):$/;"	f
+build_optimizer	./transfer_learning/optim/builder.py	/^def build_optimizer(config, model):$/;"	f
+build_transforms	./transfer_learning/datasets/builder.py	/^def build_transforms(config):$/;"	f
+caffe_lmdb_multilabel_worker_init_fn	./transfer_learning/datasets/caffe_lmdb.py	/^def caffe_lmdb_multilabel_worker_init_fn(worker_id):$/;"	f
+class_folder	./scripts/datasets/flowers_to_image_folder.py	/^        class_folder = os.path.join(split, class_name)$/;"	v
+cohen_aug	./transfer_learning/datasets/chexpert.py	/^def cohen_aug(img):$/;"	f
+collate_fn	./transfer_learning/dataloaders/dali.py	/^def collate_fn(batch, transform=None, parallel=None, n_jobs=16):$/;"	f
+compression	./pretrain.py	/^    compression = hvd.Compression.fp16 if config.horovod.fp16_allreduce else hvd.Compression.none$/;"	v
+compute_loss	./pretrain.py	/^def compute_loss(output, target_batch):$/;"	f
+config	./pretrain.py	/^    config = OmegaConf.load(args.config_file)$/;"	v
+conv1x1	./transfer_learning/models/bit.py	/^def conv1x1(cin, cout, stride=1, bias=False):$/;"	f
+conv3x3	./transfer_learning/models/bit.py	/^def conv3x3(cin, cout, stride=1, groups=1, bias=False):$/;"	f
+create_dat	./transfer_learning/finetuning/lbtoolbox.py	/^def create_dat(basename, dtype, shape, fillvalue=None, **meta):$/;"	f
+cri	./finetune.py	/^        def cri(output, target_batch):$/;"	f	function:main
+dali_device	./transfer_learning/dataloaders/builder.py	/^            dali_device="cpu",$/;"	v	class:build_dataloader.Loader
+data_augmentation	./transfer_learning/dataloaders/builder.py	/^            data_augmentation=False,$/;"	v	class:build_dataloader.Loader
+data_augmentation	./transfer_learning/dataloaders/builder.py	/^            data_augmentation=True,$/;"	v	class:build_dataloader.Loader
+dataloader	./transfer_learning/dataloaders/dali.py	/^    dataloader = DALIClassificationIterator(pipeline, reader_name="Reader")$/;"	v
+dataloader	./transfer_learning/dataloaders/dali.py	/^    dataloader = DALIClassificationIterator(pipeline, size=nb_examples_per_epoch)$/;"	v
+dataloader	./transfer_learning/dataloaders/dali.py	/^    dataloader = DALIDataLoader(dataloader, batch_size=batch_size)$/;"	v
+dataset	./transfer_learning/finetuning/fewshot.py	/^  dataset = tv.datasets.ImageFolder(sys.argv[2], preprocess)$/;"	v
+default_collate	./transfer_learning/dataloaders/dataloader_threads.py	/^default_collate = _utils.collate.default_collate$/;"	v
+define_graph	./transfer_learning/dataloaders/dali.py	/^    def define_graph(self):$/;"	m	class:BasePipeline
+description	./setup.py	/^    description='',$/;"	v
+device_id	./transfer_learning/dataloaders/builder.py	/^            device_id=hvd.local_rank(),$/;"	v	class:build_dataloader.Loader
+extract_features	./transfer_learning/models/builder.py	/^def extract_features(config, model, batch):$/;"	f
+f	./scripts/datasets/flowers_to_image_folder.py	/^        f = f.strip()$/;"	v
+features	./transfer_learning/dataloaders/dali.py	/^        features=features,$/;"	v
+features	./transfer_learning/dataloaders/dali.py	/^    features = {$/;"	v
+file_root	./transfer_learning/dataloaders/dali.py	/^        file_root=data_dir,$/;"	v
+find_fewshot_indices	./transfer_learning/finetuning/fewshot.py	/^def find_fewshot_indices(dataset, n_shots, random_state=None):$/;"	f
+find_indices_loader	./transfer_learning/finetuning/fewshot.py	/^def find_indices_loader(loader, n_shots, n_classes):$/;"	f
+forward	./transfer_learning/models/bit.py	/^  def forward(self, x):$/;"	m	class:PreActBottleneck
+forward	./transfer_learning/models/bit.py	/^  def forward(self, x):$/;"	m	class:ResNetV2
+forward	./transfer_learning/models/bit.py	/^  def forward(self, x):$/;"	m	class:StdConv2d
+gen_wrapper	./transfer_learning/dataloaders/dali.py	/^    def gen_wrapper(pipeline):$/;"	m	class:DALIDataLoader
+get	./transfer_learning/datasets/caffe_lmdb.py	/^    def get(self, i):$/;"	m	class:CachedCaffeLMDB
+get	./transfer_learning/datasets/caffe_lmdb.py	/^    def get(self, i):$/;"	m	class:CaffeLMDB
+get	./transfer_learning/datasets/caffe_lmdb.py	/^    def get(self, i):$/;"	m	class:CaffeLMDBMultiLabel
+get_class_name	./transfer_learning/datasets/pets.py	/^def get_class_name(filename):$/;"	f
+get_final_lr	./transfer_learning/finetuning/bit_hyperrule.py	/^def get_final_lr(dataset_size, base_lr=0.003):$/;"	f
+get_lr	./transfer_learning/finetuning/bit_hyperrule.py	/^def get_lr(step, dataset_size, base_lr=0.003):$/;"	f
+get_mixup	./transfer_learning/finetuning/bit_hyperrule.py	/^def get_mixup(dataset_size):$/;"	f
+get_resolution	./transfer_learning/finetuning/bit_hyperrule.py	/^def get_resolution(original_resolution):$/;"	f
+get_resolution_from_dataset	./transfer_learning/finetuning/bit_hyperrule.py	/^def get_resolution_from_dataset(dataset):$/;"	f
+get_schedule	./transfer_learning/finetuning/bit_hyperrule.py	/^def get_schedule(dataset_size):$/;"	f
+handler	./transfer_learning/finetuning/lbtoolbox.py	/^    def handler(signum, frame):$/;"	f	function:Uninterrupt.__enter__
+idx_files	./transfer_learning/dataloaders/builder.py	/^            idx_files = [$/;"	v	class:build_dataloader.Loader
+image_size	./transfer_learning/dataloaders/builder.py	/^            image_size=image_size,$/;"	v	class:build_dataloader.Loader
+index_path	./transfer_learning/dataloaders/dali.py	/^        index_path=idx_files,$/;"	v
+initial_fill	./transfer_learning/dataloaders/dali.py	/^        initial_fill=shuffle_buffer_size,$/;"	v
+input	./transfer_learning/dataloaders/dali.py	/^    input = ops.Caffe2Reader($/;"	v
+input	./transfer_learning/dataloaders/dali.py	/^    input = ops.FileReader($/;"	v
+input	./transfer_learning/dataloaders/dali.py	/^    input = ops.TFRecordReader($/;"	v
+is_alive	./transfer_learning/dataloaders/worker.py	/^        def is_alive(self):$/;"	m	class:ManagerWatchdog
+known_dataset_sizes	./transfer_learning/finetuning/bit_hyperrule.py	/^known_dataset_sizes = {$/;"	v
+label_type	./transfer_learning/dataloaders/builder.py	/^            label_type=label_type,$/;"	v	class:build_dataloader.Loader
+license	./setup.py	/^    license='MIT',$/;"	v
+load	./transfer_learning/datasets/caffe_lmdb.py	/^    def load(self):$/;"	m	class:CachedCaffeLMDB
+load_dat	./transfer_learning/finetuning/lbtoolbox.py	/^def load_dat(basename, mode="r"):$/;"	f
+load_from	./transfer_learning/models/bit.py	/^  def load_from(self, weights, prefix=''):$/;"	m	class:PreActBottleneck
+load_from	./transfer_learning/models/bit.py	/^  def load_from(self, weights, prefix='resnet\/'):$/;"	m	class:ResNetV2
+load_from_checkpoint	./transfer_learning/models/builder.py	/^def load_from_checkpoint(config, path, replace_num_classes_by:int=None):$/;"	f
+log_eval	./finetune.py	/^def log_eval(logger, log_writer, all_loss, y_true, y_pred_proba, step):$/;"	f
+log_writer	./pretrain.py	/^    log_writer = SummaryWriter(log_dir) if hvd.rank() == 0 else None$/;"	v
+main	./finetune.py	/^def main(args):$/;"	f
+mean	./transfer_learning/dataloaders/builder.py	/^            mean=mean,$/;"	v	class:build_dataloader.Loader
+measure	./transfer_learning/finetuning/lbtoolbox.py	/^  def measure(self, what):$/;"	m	class:Chrono
+mixup_criterion	./finetune.py	/^def mixup_criterion(criterion, pred, y_a, y_b, l):$/;"	f
+mixup_data	./finetune.py	/^def mixup_data(x, y, l):$/;"	f
+mktrainval	./finetune.py	/^def mktrainval(args, config, logger):$/;"	f
+model	./pretrain.py	/^    model = build_model(config)$/;"	v
+name	./setup.py	/^    name='transfer_learning',$/;"	v
+nb_examples_per_epoch	./transfer_learning/dataloaders/dali.py	/^    nb_examples_per_epoch = 0$/;"	v
+nb_examples_per_epoch	./transfer_learning/dataloaders/dali.py	/^    nb_examples_per_epoch = nb_examples_per_epoch \/\/ world_size$/;"	v
+nb_images	./pretrain.py	/^    nb_images = 0$/;"	v
+next	./transfer_learning/dataloaders/dataloader_threads.py	/^    next = __next__  # Python 2 compatibility$/;"	v	class:_DataLoaderIter
+normalize_	./transfer_learning/datasets/builder.py	/^        def normalize_(x):$/;"	f	function:build_transforms
+num_shards	./transfer_learning/dataloaders/dali.py	/^        num_shards=world_size,$/;"	v
+num_workers	./transfer_learning/dataloaders/builder.py	/^            num_workers=workers,$/;"	v	class:build_dataloader.Loader
+optimizer	./pretrain.py	/^    optimizer = build_optimizer(config, model)$/;"	v
+optimizer	./pretrain.py	/^    optimizer = hvd.DistributedOptimizer($/;"	v
+packages	./setup.py	/^    packages=find_packages(),$/;"	v
+parser	./finetune.py	/^    parser = bit_common.argparser(models.KNOWN_MODELS.keys())$/;"	v
+parser	./pretrain.py	/^    parser = argparse.ArgumentParser($/;"	v
+path	./transfer_learning/dataloaders/builder.py	/^            path=glob(train_dir),$/;"	v	class:build_dataloader.Loader
+path	./transfer_learning/dataloaders/builder.py	/^            path=glob(val_dir),$/;"	v	class:build_dataloader.Loader
+path	./transfer_learning/dataloaders/dali.py	/^        path=path,$/;"	v
+path	./transfer_learning/dataloaders/dali.py	/^        path=tfrecord_files,$/;"	v
+pipeline	./transfer_learning/dataloaders/dali.py	/^    pipeline = BasePipeline(input=input, **params)$/;"	v
+pipeline	./transfer_learning/dataloaders/dali.py	/^    pipeline = BasePipeline(input=wrapped_input, **params)$/;"	v
+prefetch_queue_depth	./transfer_learning/dataloaders/builder.py	/^            prefetch_queue_depth=16,$/;"	v	class:build_dataloader.Loader
+prefetch_queue_depth	./transfer_learning/dataloaders/dali.py	/^        prefetch_queue_depth=prefetch_queue_depth,$/;"	v
+random_shuffle	./transfer_learning/dataloaders/dali.py	/^        random_shuffle=shuffle,$/;"	v
+rank	./transfer_learning/dataloaders/builder.py	/^            rank=hvd.rank(),$/;"	v	class:build_dataloader.Loader
+recycle	./finetune.py	/^def recycle(iterable):$/;"	f
+release	./transfer_learning/finetuning/lbtoolbox.py	/^  def release(self):$/;"	m	class:Uninterrupt
+resume_from_epoch	./pretrain.py	/^    resume_from_epoch = 0$/;"	v
+resume_from_epoch	./pretrain.py	/^    resume_from_epoch = hvd.broadcast(torch.tensor(resume_from_epoch), root_rank=0,$/;"	v
+run_eval	./finetune.py	/^def run_eval(model, data_loader, device, chrono, logger, step, task):$/;"	f
+sampler	./transfer_learning/dataloaders/builder.py	/^            sampler=train_sampler,$/;"	v	class:build_dataloader.Loader
+sampler	./transfer_learning/dataloaders/builder.py	/^            sampler=val_sampler,$/;"	v	class:build_dataloader.Loader
+save_best	./pretrain.py	/^def save_best(epoch, log_dir):$/;"	f
+save_checkpoint	./pretrain.py	/^def save_checkpoint(epoch, log_dir):$/;"	f
+seed_worker	./finetune.py	/^def seed_worker(worker_id):$/;"	f
+select_finetuning_options	./finetune.py	/^def select_finetuning_options(cfg, pretrain_name):$/;"	f
+setup_logger	./transfer_learning/finetuning/bit_common.py	/^def setup_logger(args):$/;"	f
+shard_id	./transfer_learning/dataloaders/dali.py	/^        shard_id=rank,$/;"	v
+shuffle	./transfer_learning/dataloaders/builder.py	/^            shuffle=False,$/;"	v	class:build_dataloader.Loader
+shuffle	./transfer_learning/dataloaders/builder.py	/^            shuffle=True,$/;"	v	class:build_dataloader.Loader
+shuffle	./transfer_learning/dataloaders/builder.py	/^            shuffle=train_sampler is None,$/;"	v	class:build_dataloader.Loader
+shuffle_buffer_size	./transfer_learning/dataloaders/builder.py	/^            shuffle_buffer_size=512,$/;"	v	class:build_dataloader.Loader
+start	./pretrain.py	/^    start = time.time()$/;"	v
+std	./transfer_learning/dataloaders/builder.py	/^            std=std,$/;"	v	class:build_dataloader.Loader
+step	./transfer_learning/optim/sgd_agc.py	/^    def step(self, closure=None):$/;"	m	class:SGD_AGC
+string	./transfer_learning/datasets/chexpert.py	/^    def string(self):$/;"	m	class:ChexPert
+string	./transfer_learning/datasets/mimic.py	/^    def string(self):$/;"	m	class:MIMIC
+string	./transfer_learning/datasets/nih.py	/^    def string(self):$/;"	m	class:NIH
+string	./transfer_learning/datasets/padchest.py	/^    def string(self):$/;"	m	class:PadChest
+tf2th	./transfer_learning/models/bit.py	/^def tf2th(conv_weights):$/;"	f
+tfrecord_files	./transfer_learning/dataloaders/builder.py	/^            tfrecord_files = glob(os.path.join(val_dir, "*"))$/;"	v	class:build_dataloader.Loader
+tfrecord_files	./transfer_learning/dataloaders/builder.py	/^            tfrecord_files = list(filter(os.path.isfile, tfrecord_files))$/;"	v	class:build_dataloader.Loader
+times	./transfer_learning/finetuning/lbtoolbox.py	/^  def times(self, what):$/;"	m	class:Chrono
+topk	./finetune.py	/^def topk(output, target, ks=(1,)):$/;"	f
+train	./pretrain.py	/^def train(epoch):$/;"	f
+train_sampler	./transfer_learning/dataloaders/builder.py	/^            train_sampler = None$/;"	v	class:build_dataloader.Loader
+train_sampler	./transfer_learning/dataloaders/builder.py	/^            train_sampler = torch.utils.data.distributed.DistributedSampler(train_dataset, num_replicas=hvd.size(), rank=hvd.rank())$/;"	v	class:build_dataloader.Loader
+unitwise_norm	./transfer_learning/optim/sgd_agc.py	/^def unitwise_norm(x: torch.Tensor):$/;"	f
+update	./pretrain.py	/^    def update(self, val):$/;"	m	class:Metric
+val_loader	./transfer_learning/dataloaders/builder.py	/^            val_loader = Loader(val_loader)$/;"	v	class:build_dataloader.Loader
+val_loader	./transfer_learning/dataloaders/builder.py	/^            val_loader = None$/;"	v	class:build_dataloader.Loader
+val_loader	./transfer_learning/dataloaders/builder.py	/^            val_loader = build_dali_data_loader_from_tfrecords($/;"	v	class:build_dataloader.Loader
+val_sampler	./transfer_learning/dataloaders/builder.py	/^            val_sampler = None$/;"	v	class:build_dataloader.Loader
+val_sampler	./transfer_learning/dataloaders/builder.py	/^            val_sampler = torch.utils.data.distributed.DistributedSampler(val_dataset, num_replicas=hvd.size(), rank=hvd.rank())$/;"	v	class:build_dataloader.Loader
+validate	./pretrain.py	/^def validate(epoch):$/;"	f
+verbose	./pretrain.py	/^    verbose = 1 if hvd.rank() == 0 else 0$/;"	v
+version	./setup.py	/^    version='0.0.1',$/;"	v
+workers	./transfer_learning/dataloaders/builder.py	/^            workers=workers,$/;"	v	class:build_dataloader.Loader
+world_size	./transfer_learning/dataloaders/builder.py	/^            world_size=hvd.size(),$/;"	v	class:build_dataloader.Loader
+wrapped_input	./transfer_learning/dataloaders/dali.py	/^    def wrapped_input(name=None):$/;"	f

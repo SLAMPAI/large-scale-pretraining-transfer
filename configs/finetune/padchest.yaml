@@ -1,0 +1,23 @@
+data:
+    backend: native
+    type: padchest
+    workers: 24
+    train_dir: "datasets/PadChest"
+    val_dir: "datasets/PadChest"
+    nb_classes: 27
+    mean: [0.5, 0.5, 0.5]
+    std: [0.5, 0.5, 0.5]
+    augmentation:
+        type: chexpert
+        aug: cohen_chexpert_aug
+    image_size: 224
+    views: ["PA", "AP", "AP Supine", "L", "COSTAL"]
+optim:
+    type: SGD_AGC
+    momentum: 0.9
+    base_lr: 0.001
+    batch: 128
+    batch_split: 32
+    weight_decay: 0
+logging:
+    eval_every: 100

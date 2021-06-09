@@ -1,0 +1,42 @@
+# sbatch -N 16 --partition booster -t 08:00:00 scripts/juwels_booster.sh pretrain.py --config-file configs/imagenet1k_bit152x4.yaml 
+data:
+    backend: dali
+    type: lmdb
+    workers: 16
+    train_dir: "datasets/imagenet-1K/lmdb/train"
+    val_dir: "datasets/imagenet-1K/lmdb/valid"
+    nb_classes: 10000
+    augmentation:
+        type: random_resized_crop
+    image_size: 224
+
+mixed_precision:
+    enabled: true
+    backend: native
+
+seed: 42
+
+optim:
+    type: SGD_AGC
+    momentum: 0.9
+    base_lr: 0.03
+    base_batch_size: 256
+    train_local_batch_size: 16
+    val_local_batch_size: 64
+    epochs: 90
+    warmup_epochs: 15
+    weight_decay: 0.0001
+    gradient_accumulate: 1
+    lr_scheduler:
+        type: step
+
+model:
+    type: BiT-S-R152x4
+
+
+logging:
+    save_checkpoint: true
+    validate: true
+
+horovod:
+    fp16_allreduce: false
