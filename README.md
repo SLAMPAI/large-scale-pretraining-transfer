@@ -7,7 +7,6 @@ In this repository, we provide the code for reproducing the experiments on large
 
 We provide instructions on how to download the different datasets used in the paper.
 We provide the pre-trained models, the instructions to fine-tune a pre-trained model on one of the datasets considered in the paper, as well as new datasets.
-We also provide instructions on how to pre-train a model from scratch.
 
 Organization
 ------------
@@ -16,7 +15,9 @@ Organization
     ├── README.md          <- Main doc README on reproducing the experiments
     ├── requirements.txt   <- The requirements file for reproducing the experiments environment, e.g.
     │                         generated with `pip freeze > requirements.txt`
-    ├── setup.py           <- makes `transfer learning` package pip installable (`pip install -e .`) so it can be imported
+    ├── setup.py           <- makes `transfer learning` package installable so it can be imported
+    ├── pretrain.py        <- code for pre-training 
+    ├── finetune.py        <- code for fine-tuning 
     ├── transfer_learning  <- Source code
     │   ├── dataloaders    <- Dataset loaders
     │   ├── datasets       <- Datasets
