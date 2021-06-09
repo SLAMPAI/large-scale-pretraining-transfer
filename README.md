@@ -77,7 +77,7 @@ If you would like to re-create the dataset from the original version, follow the
 1. Download the dataset from <https://s3.amazonaws.com/fast-ai-imageclas/oxford-102-flowers.tgz> and extract the archive
 2. `cat valid.txt train.txt > mod_test.txt`
 3. `cat test.txt > mod_train.txt`
-5. `python <REPO_PATH>/scripts/datasets/flowers_to_image_folder.py`, this will create a folder `mod_train` and a folder `mod_test`
+5. `wget https://raw.githubusercontent.com/SLAMPAI/large-scale-pretraining-transfer/master/scripts/datasets/flowers_to_image_folder.py;python flowers_to_image_folder.py`, this will create a folder `mod_train` and a folder `mod_test`
 6.  Move the folder to `oxford-102-flowers` to `datasets`
 
 #### Oxford-III Pets
