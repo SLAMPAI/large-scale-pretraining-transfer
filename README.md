@@ -69,7 +69,7 @@ Following are in the instructions to download each dataset considered in the pap
 
 #### Oxford Flowers-102
 
-1. Download the dataset from <https://bit.ly/3pjYslK> and extract the archive
+1. Download the dataset from <https://bit.ly/3xBF9XZ> and extract the archive
 2. Put the folder `oxford-102-flowers` in `datasets`
 
 If you would like to re-create the dataset from the original version, follow these steps:
