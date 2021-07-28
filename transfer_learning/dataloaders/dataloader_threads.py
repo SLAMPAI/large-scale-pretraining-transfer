@@ -15,6 +15,7 @@ from torch.utils.data import _utils
 from threading import Thread
 from threading import Event
 from queue import Queue
+import queue
 from .import worker
 
 #from torch._six import queue

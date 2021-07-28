@@ -43,22 +43,12 @@ def build_dataset(config):
             train_dataset = Tuberculosis(train_dir, train=True, transform=train_transform)
             val_dataset = Tuberculosis(val_dir, train=False, transform=val_transform)
     elif dataset_type == "lmdb":
-        # try:
-            # rank = hvd.rank()
-            # world_size = hvd.size()
-        # except Exception:
-            # rank = 0
-            # world_size = 1
         train_dataset = CaffeLMDB(
             train_dir,
-            # rank=rank,
-            # world_size=world_size,
             transform=train_transform
         )
         val_dataset = CaffeLMDB(
             val_dir,
-            # rank=rank,
-            # world_size=world_size,
             transform=val_transform
         )
     elif dataset_type == "image_folder":
@@ -220,13 +210,10 @@ def build_transforms(config):
         size = len(mean)
         m = np.array(mean).reshape((size,1, 1))
         s = np.array(std).reshape((size, 1, 1))
-        def normalize_(x):
-            n = x.shape[0]
-            return (x - m[:n]) / s[:n]
         transform = torchvision.transforms.Compose([
             xrv.datasets.XRayCenterCrop(),
             xrv.datasets.XRayResizer(224, engine='cv2'),
-            normalize_,
+            Normalize(m, s),
         ])
         train_transform = transform
         val_transform = transform
@@ -240,3 +227,12 @@ def build_transforms(config):
         train_transform.transforms.insert(0, RandAugment(N, M))
     return train_transform, val_transform
 
+class Normalize:
+
+    def __init__(self, mean, std):
+        self.mean = mean
+        self.std = std
+
+    def __call__(self, x):
+        n = x.shape[0]
+        return (x - self.mean[:n]) / self.std[:n]

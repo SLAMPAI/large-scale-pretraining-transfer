@@ -178,7 +178,7 @@ class PadChest(Dataset):
         inds = np.arange(len(self.csv))
         rng = np.random.RandomState(SEED)
         rng.shuffle(inds)
-        print("Padchest size full" , len(self.csv))
+        # print("Padchest size full" , len(self.csv))
         nb_train = int(len(inds) * TRAIN_RATIO)
         if train:
             inds = inds[0:nb_train]
@@ -186,7 +186,7 @@ class PadChest(Dataset):
             inds = inds[nb_train:]
         self.csv = self.csv.iloc[inds]
         self.labels = self.labels[inds]
-        print("Padchest size" , len(self.csv))
+        # print("Padchest size" , len(self.csv))
 
     def string(self):
         return self.__class__.__name__ + " num_samples={} views={} data_aug={}".format(len(self), self.views, self.data_aug)

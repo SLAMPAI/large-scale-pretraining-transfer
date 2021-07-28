@@ -1,12 +1,22 @@
+from functools import partial
+import math
+import os
+import datetime
+import time
+import argparse
+from tqdm import tqdm
+import torch.multiprocessing as mp # if not used, "memory mapped error" in the dataloader, no idea why
 import os
 from os.path import join as pjoin  # pylint: disable=g-importing-member
 from copy import deepcopy
 import time
+import pandas as pd
 import random
 import numpy as np
 import torch
 import torchvision as tv
 import torch.nn.functional as F
+import logging
 from torch.utils.tensorboard import SummaryWriter
 from sklearn.metrics import classification_report
 from sklearn.metrics import average_precision_score
@@ -23,8 +33,24 @@ from transfer_learning.optim.sgd_agc import SGD_AGC
 from transfer_learning.models.builder import load_from_checkpoint
 from transfer_learning.datasets.builder import build_dataset
 from transfer_learning.optim.builder import build_optimizer
+from transfer_learning.dataloaders.builder import build_dataloader
+
 
 from omegaconf import OmegaConf
+
+try:
+    import horovod.torch as hvd
+    USE_HOROVOD = True
+except ImportError:
+    USE_HOROVOD = False
+
+MULTIPROCESSING_CONTEXT = "forkserver"
+
+# if USE_HOROVOD:
+    # from transfer_learning.dataloaders.dataloader_threads import DataLoader
+# else:
+
+from torch.utils.data import DataLoader
 
 def topk(output, target, ks=(1,)):
     """Returns one boolean vector for each k, whether the target is within the output's top-k."""
@@ -78,12 +104,14 @@ def mktrainval(args, config, logger):
 
     if config.data.oversampling == True and args.examples_per_class is None:
         logger.info('Using oversampling to deal with class imbalance')
-        loader = torch.utils.data.DataLoader(
+        loader = DataLoader(
             train_set,
             shuffle=False,
             num_workers=config.data.workers,
             batch_size=config.optim.batch,
-            worker_init_fn=seed_worker
+            worker_init_fn=seed_worker,
+            multiprocessing_context=MULTIPROCESSING_CONTEXT,
+
         )
         #Thanks to https://discuss.pytorch.org/t/balanced-sampling-between-classes-with-torchvision-dataloader/2703/2
         class_weight = torch.zeros(config.data.nb_classes)
@@ -102,7 +130,14 @@ def mktrainval(args, config, logger):
         weight = torch.FloatTensor(weight)
         sampler = torch.utils.data.sampler.WeightedRandomSampler(weight, len(weight))
     else:
-        sampler = None
+        if USE_HOROVOD:
+            sampler = torch.utils.data.DistributedSampler(
+                train_set,
+                num_replicas=hvd.size(),
+                rank=hvd.rank(),
+            )
+        else:
+            sampler = None
     if args.examples_per_class is not None:
         logger.info(f"Looking for {args.examples_per_class} images per class...")
         if hasattr(train_set, "labels"):
@@ -116,7 +151,7 @@ def mktrainval(args, config, logger):
                 indices.append(inds_cl)
             indices = np.concatenate(indices)
             rng.shuffle(indices)
-            print(indices)
+            # print(indices)
         else:
             indices = fs.find_fewshot_indices(train_set, args.examples_per_class, random_state=args.seed)
         train_set = torch.utils.data.Subset(train_set, indices=indices)
@@ -134,42 +169,45 @@ def mktrainval(args, config, logger):
 
     micro_batch_size = config.optim.batch // config.optim.batch_split
 
-    valid_loader = torch.utils.data.DataLoader(
+    valid_loader = DataLoader(
         valid_set,
-        batch_size=micro_batch_size,
+        batch_size=config.optim.val_batch_size if config.optim.val_batch_size else micro_batch_size,
         shuffle=False,
         num_workers=config.data.workers,
-        pin_memory=True,
+        # pin_memory=True,
         drop_last=False,
-        worker_init_fn=seed_worker
+        worker_init_fn=seed_worker,
+        multiprocessing_context=MULTIPROCESSING_CONTEXT,
     )
 
     if micro_batch_size <= len(train_set):
-        train_loader = torch.utils.data.DataLoader(
+        train_loader = DataLoader(
             train_set,
             batch_size=micro_batch_size,
             shuffle=True if sampler is None else None,
             num_workers=config.data.workers,
-            pin_memory=True,
+            # pin_memory=True,
             drop_last=False,
             sampler=sampler,
-            worker_init_fn=seed_worker
+            worker_init_fn=seed_worker,
+            multiprocessing_context=MULTIPROCESSING_CONTEXT,
         )
     else:
         # In the few-shot cases, the total dataset size might be smaller than the batch-size.
         # In these cases, the default sampler doesn't repeat, so we need to make it do that
         # if we want to match the behaviour from the paper.
-        train_loader = torch.utils.data.DataLoader(
+        train_loader = DataLoader(
             train_set,
             batch_size=micro_batch_size,
             num_workers=config.data.workers,
-            pin_memory=True,
+            # pin_memory=True,
             sampler=torch.utils.data.RandomSampler(
                 train_set, replacement=True, num_samples=micro_batch_size
             ),
-            worker_init_fn=seed_worker
+            worker_init_fn=seed_worker,
+            multiprocessing_context=MULTIPROCESSING_CONTEXT,
         )
-
+    # train_loader.sampler = sampler
     return train_set, valid_set, train_loader, valid_loader
 
 
@@ -229,11 +267,17 @@ def run_eval(model, data_loader, device, chrono, logger, step, task):
                     top1, top5 = topk(logits, y, ks=(1, 5))
                     all_top1.extend(top1.cpu())
                     all_top5.extend(top5.cpu())
+                    all_c.extend(c.cpu())  # Also ensures a sync point.
+                    all_true.append(y.cpu().numpy())
+                    all_pred_proba.append(logits.softmax(dim=-1).cpu().numpy())
                 elif task == "multilabel":
-                    c = torch.nn.BCEWithLogitsLoss(reduction="none")(logits, y).sum(dim=1)
-                all_c.extend(c.cpu())  # Also ensures a sync point.
-                all_true.append(y.cpu().numpy())
-                all_pred_proba.append(logits.softmax(dim=1).cpu().numpy())
+                    all_true.append(y.cpu().numpy())
+                    all_pred_proba.append(logits.sigmoid().cpu().numpy())
+                    mask = ~torch.isnan(y)
+                    logits = logits[mask]
+                    y = y[mask]
+                    c = F.binary_cross_entropy_with_logits(logits, y).item()
+                    all_c.append(c)  # Also ensures a sync point.
 
         # measure elapsed time
         end = time.time()
@@ -247,7 +291,9 @@ def run_eval(model, data_loader, device, chrono, logger, step, task):
             f"top1 {np.mean(all_top1):.2%}, "
             f"top5 {np.mean(all_top5):.2%}"
         )
+    
     logger.flush()
+    
     all_true = np.concatenate(all_true)
     all_pred_proba = np.concatenate(all_pred_proba)
     return all_c, all_top1, all_top5, all_true, all_pred_proba
@@ -275,7 +321,14 @@ def select_finetuning_options(cfg, pretrain_name):
 
 
 def main(args):
-    logger = bit_common.setup_logger(args)
+    if USE_HOROVOD:
+        hvd.init()
+     
+    if USE_HOROVOD and hvd.rank() > 0:
+        logger = logging.getLogger('NullLogger')
+    else:
+        logger = bit_common.setup_logger(args)
+
     pretrain_config = OmegaConf.load(args.pretrain_config_file)
     finetune_config = OmegaConf.load(args.finetune_config_file)
     if pretrain_config.data.mean:
@@ -289,11 +342,17 @@ def main(args):
         from torch.backends import cudnn
         from glob import glob
         nb_runs = len(glob(os.path.join(args.logdir, "events*")))
-        seed = args.seed + nb_runs*100
+        global_seed = args.seed + nb_runs*100
         logger.info(f"Using global seed of {args.seed} + {nb_runs}*100")
+        rng = random.Random(global_seed)
+        if USE_HOROVOD:
+            seed = hash((global_seed, hvd.rank())) % (2 ** 32)
+        else:
+            seed = global_seed
         # follow https://pytorch.org/docs/stable/notes/randomness.html
         # for reproducibility
         torch.manual_seed(seed)
+        torch.cuda.manual_seed(seed)
         random.seed(seed)
         np.random.seed(seed)
         # torch.use_deterministic_algorithms(True)
@@ -305,20 +364,31 @@ def main(args):
         # override batch_split if
         finetune_config.optim.batch_split = args.batch_split
 
+    if USE_HOROVOD:
+        finetune_config.optim.batch //= hvd.size()
+        finetune_config.optim.batch_split //= hvd.size()
+        logger.info(f"Number of GPU workers: {hvd.size()}")
+        logger.info(f"GPU local batch size: {finetune_config.optim.batch}")
+        logger.info(f"Batch Split: {finetune_config.optim.batch_split}")
+
     # Lets cuDNN benchmark conv implementations and choose the fastest.
     # Only good if sizes stay the same within the main loop!
     torch.backends.cudnn.benchmark = True
-
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    if USE_HOROVOD:
+        torch.cuda.set_device(hvd.local_rank())
+        # torch.cuda.set_device(0)
+    
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     logger.info(f"Going to train on {device}")
     
-    log_writer = SummaryWriter(os.path.join(args.logdir))
+    if USE_HOROVOD and hvd.rank() > 0:
+        log_writer = None
+    else:
+        log_writer = SummaryWriter(os.path.join(args.logdir))
 
     train_set, valid_set, train_loader, valid_loader = mktrainval(args, finetune_config, logger)
-
     nb_classes = finetune_config.data.nb_classes
     
-    # pretrain_config.data.nb_classes = 10000
     if args.model_path is None:
         name, *rest = os.path.splitext(os.path.basename(args.pretrain_config_file))
         path = os.path.join("pretrained_models", name, "model.pth.tar")
@@ -343,11 +413,31 @@ def main(args):
         logger.info(f"Resumed at step {step}")
     except FileNotFoundError:
         logger.info("Fine-tuning")
+     
+    if USE_HOROVOD:
+        # compression = hvd.Compression.fp16 if finetune_config.horovod.fp16_allreduce else hvd.Compression.none
+        compression = hvd.Compression.none
+        optim = hvd.DistributedOptimizer(
+            optim, named_parameters=model.named_parameters(),
+            compression=compression,
+            backward_passes_per_step=finetune_config.optim.batch_split,
+            op=hvd.Average,
+        )
+        hvd.broadcast_parameters(model.state_dict(), root_rank=0)
+        hvd.broadcast_optimizer_state(optim, root_rank=0)
 
     optim.zero_grad()
+    
+    if args.steps:
+        finetune_config.optim.steps = args.steps
 
+    if finetune_config.optim.steps:
+        bit_hyperrule_train_set = bit_hyperrule.get_max_train_set(finetune_config.optim.steps)
+    else:
+        bit_hyperrule_train_set = len(train_set)
+    logger.info(f"Bit HyperRule schedule: {bit_hyperrule.get_schedule(bit_hyperrule_train_set)}")
     model.train()
-    mixup = bit_hyperrule.get_mixup(len(train_set))
+    mixup = bit_hyperrule.get_mixup(bit_hyperrule_train_set)
     if finetune_config.optim.class_weight == 'balanced' and args.examples_per_class is None:
         class_weight = torch.zeros(nb_classes)
         freq = [0] * nb_classes
@@ -379,7 +469,16 @@ def main(args):
     accum_steps = 0
     mixup_l = np.random.beta(mixup, mixup) if mixup > 0 else 1
     end = time.time()
+    
+    steps_per_epoch = len(train_set) // finetune_config.optim.batch
     for (x, y) in recycle(train_loader):
+        # if step == 110:
+            # break
+        if USE_HOROVOD and hasattr(train_loader.sampler, 'set_epoch'):
+            epoch = step // steps_per_epoch
+            new_epoch = (step % steps_per_epoch) == 0
+            if new_epoch:
+                train_loader.sampler.set_epoch(epoch)
         # measure data loading time, which is spent in the `for` statement.
         chrono._done("load", time.time() - end)
 
@@ -388,7 +487,7 @@ def main(args):
         y = y.to(device, non_blocking=True)
         
         # Update learning-rate, including stop training if over.
-        lr = bit_hyperrule.get_lr(step, len(train_set), finetune_config.optim.base_lr)
+        lr = bit_hyperrule.get_lr(step, bit_hyperrule_train_set, finetune_config.optim.base_lr)
         if lr is None:
             # lr is None means last step of the bit hyperrule schedule was achieved
             # in original bit hyperrule, this is where we would stop, but we can imagine
@@ -403,7 +502,7 @@ def main(args):
             if step >= steps:
                 break
             # use the last learning rate from bit hyperrule learning rate schedule
-            lr = bit_hyperrule.get_final_lr(len(train_set), base_lr=finetune_config.optim.base_lr)
+            lr = bit_hyperrule.get_final_lr(bit_hyperrule_train_set, base_lr=finetune_config.optim.base_lr)
         for param_group in optim.param_groups:
             param_group["lr"] = lr
         if mixup > 0.0:
@@ -429,8 +528,10 @@ def main(args):
             logger.info(
                 f"[step {step}{accstep}]: loss={c_num:.5f} (lr={lr:.1e})"
             )  # pylint: disable=logging-format-interpolation
-            log_writer.add_scalar('train/loss', c_num, step)
-        logger.flush()
+            if log_writer:
+                log_writer.add_scalar('train/loss', c_num, step)
+        if hasattr(logger, "flush"):
+            logger.flush()
 
         # Update params
         if accum_steps == finetune_config.optim.batch_split:
@@ -446,26 +547,32 @@ def main(args):
 
             # Run evaluation and save the model.
             if (finetune_config.logging.eval_every and step % finetune_config.logging.eval_every == 0):
-                all_c, all_top1, all_top5, y_true, y_pred_proba = run_eval(model, valid_loader, device, chrono, logger, step, task)
-                log_eval(logger, log_writer, all_c, y_true, y_pred_proba, step)
-                if args.save:
-                    torch.save(
-                        {
-                            "step": step,
-                            "model": model.state_dict(),
-                            "optim": optim.state_dict(),
-                            "pretrain_config": pretrain_config,
-                            "finetune_config": finetune_config,
-                        },
-                        savename,
-                    )
+
+                if ((USE_HOROVOD and hvd.rank() == 0) or not USE_HOROVOD):
+                    logger.info(f"Timings:\n{chrono}")
+                    all_c, all_top1, all_top5, y_true, y_pred_proba = run_eval(model, valid_loader, device, chrono, logger, step, task)
+                    log_eval(logger, log_writer, all_c, y_true, y_pred_proba, step)
+                    if args.save:
+                        torch.save(
+                            {
+                                "step": step,
+                                "model": model.state_dict(),
+                                "optim": optim.state_dict(),
+                                "pretrain_config": pretrain_config,
+                                "finetune_config": finetune_config,
+                            },
+                            savename,
+                        )
+                if USE_HOROVOD:
+                    hvd.join()
 
         end = time.time()
 
     # Final eval at end of training.
     # all_c, all_top1, all_top5 = run_eval(model, valid_loader, device, chrono, logger, step="end")
-    all_c, all_top1, all_top5, y_true, y_pred_proba = run_eval(model, valid_loader, device, chrono, logger, step, task)
-    log_eval(logger, log_writer, all_c, y_true, y_pred_proba, step)
+    if (((USE_HOROVOD and hvd.rank() == 0) or not USE_HOROVOD)):
+        all_c, all_top1, all_top5, y_true, y_pred_proba = run_eval(model, valid_loader, device, chrono, logger, step, task)
+        log_eval(logger, log_writer, all_c, y_true, y_pred_proba, step)
     # log_writer.add_scalar('test/loss', np.mean(all_c), step)
     # log_writer.add_scalar('test/acc', np.mean(all_top1), step)
     logger.info(f"Timings:\n{chrono}")
@@ -482,15 +589,19 @@ def log_eval(logger, log_writer, all_loss, y_true, y_pred_proba, step):
         logger.info(classification_report(y_true, y_pred))
     auc_vals = []
     avg_prec_vals = []
-
-    for class_id in range(y_pred_proba.shape[1]):
+    precisions = []
+    recalls = []
+    f1s = []
+    supports = []
+    supports_pos = []
+    nb_classes = y_pred_proba.shape[1]
+    for class_id in range(nb_classes):
         
         if multilabel:
             yt = y_true[:, class_id]
             yp = y_pred_proba[:, class_id] > 0.5
             y_pr = y_pred_proba[:, class_id]
             mask = ~np.isnan(yt)
-            print(mask.sum())
             yt = yt[mask]
             yp = yp[mask]
             y_pr = y_pr[mask]
@@ -498,11 +609,15 @@ def log_eval(logger, log_writer, all_loss, y_true, y_pred_proba, step):
             yt = (y_true == class_id)
             yp = (y_pred == class_id)
             y_pr = y_pred_proba[:, class_id]
-
+        support = len(yt)
+        support_pos = int(yt.sum())
         precision = precision_score(yt, yp)
         recall = recall_score(yt, yp)
         f1 = f1_score(yt, yp)
-        avg_prec_val = average_precision_score(yt, y_pr, pos_label=1)
+        try:
+            avg_prec_val = average_precision_score(yt, y_pr, pos_label=1)
+        except ValueError:
+            avg_prec_val = np.nan
         try:
             auc_val = roc_auc_score(yt, y_pr)
         except ValueError:
@@ -521,7 +636,27 @@ def log_eval(logger, log_writer, all_loss, y_true, y_pred_proba, step):
             log_writer.add_scalar(f'test/f1_{class_id}', f1, step)
         auc_vals.append(auc_val)
         avg_prec_vals.append(avg_prec_val)
-    
+        precisions.append(precision)
+        recalls.append(recall)
+        f1s.append(f1)
+        supports.append(support)
+        supports_pos.append(support_pos)
+    supports_neg = np.array(supports) - np.array(supports_pos)
+    report = pd.DataFrame({
+        "class": np.arange(nb_classes),
+        "precision": precisions,
+        "recall": recalls,
+        "f1": f1s,
+        "AUC": auc_vals,
+        "AvgPrecision": avg_prec_vals,
+        # "support": supports,
+        "support_pos": supports_pos,
+        "support_neg": supports_neg,
+    })
+    # print(report)
+    pd.set_option('display.max_columns', None)
+    pd.set_option('display.width', None)
+    logger.info("\n" + str(report))
     mean_average_precision = np.nanmean(avg_prec_vals)
     mean_auc = np.nanmean(auc_vals)
     logger.info(f"Mean Average Precision: {mean_average_precision:.3f}")
@@ -550,4 +685,5 @@ if __name__ == "__main__":
     parser.add_argument("--multilabel-force-classification", default=False, action="store_true")
     parser.add_argument("--valid-ratio", default=None, type=float)
     parser.add_argument("--valid-seed", default=0, type=int)
+    parser.add_argument("--steps", default=None, type=int)
     main(parser.parse_args())

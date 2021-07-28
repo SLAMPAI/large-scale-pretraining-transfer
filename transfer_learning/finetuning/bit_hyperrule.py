@@ -37,6 +37,15 @@ def get_mixup(dataset_size):
   return 0.0 if dataset_size < 20_000 else 0.1
 
 
+def get_max_train_set(steps):
+    assert steps in (500, 10000, 20000)
+    if steps == 500:
+        return 19999
+    elif steps == 10000:
+        return 499999
+    elif steps == 20000:
+        return float('inf')
+
 def get_schedule(dataset_size):
   if dataset_size < 20_000:
     return [100, 200, 300, 400, 500]

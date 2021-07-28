@@ -6,51 +6,6 @@ import torch
 from torch.utils.data import Dataset
 import cv2
 
-class ChexPert_:
-
-    def __init__(self, path, split="train", aug=None, transform=None, views=["AP", "PA"], unique_patients=False):
-        if split == "train":
-            csvpath = os.path.join(path, 'train.csv')
-        elif split == "valid":
-            csvpath = os.path.join(path, 'valid.csv')
-        else:
-            raise ValueError(csvpath)
-        self.path = path
-        self.aug = aug
-        self.dataset = CheX_Dataset_XRV(
-            imgpath=os.path.dirname(path),
-            csvpath=csvpath,
-            transform=transform,
-            unique_patients=unique_patients,
-            views=views,
-        )
-        self.pathologies = self.dataset.pathologies
-        self.labels = self.dataset.labels
-    def __getitem__(self, idx):
-        data = self.dataset[idx]
-        img = data["img"]
-        # img = img * 2 - 1 # to -1...1
-        if self.aug:
-            img = self.aug(img)
-        img = img * np.ones((3,1,1), dtype="float32") # use 3 channels
-        img = torch.from_numpy(img).float()
-        target = torch.from_numpy(data["lab"]).float()
-        return img, target 
-
-    def __len__(self):
-        return len(self.dataset)
-
-def cohen_aug(img):
-    # Follow https://arxiv.org/pdf/2002.02497.pdf, page 4
-    # "Data augmentation was used to improve generalization.  According to best results inCohen et al. (2019) (and replicated by us) 
-    # each image was rotated up to 45 degrees, translatedup to 15% and scaled larger of smaller up to 10%"
-    aug_ = A.Compose([
-        A.ShiftScaleRotate(p=1.0, shift_limit=0.25, rotate_limit=45, scale_limit=0.1),
-        A.HorizontalFlip(p=0.5),
-    ])
-    return aug_(image=img[0])["image"].reshape(img.shape)
-
-
 class ChexPert(Dataset):
     """
     CheXpert: A Large Chest Radiograph Dataset with Uncertainty Labels and Expert Comparison.
@@ -184,4 +139,15 @@ class ChexPert(Dataset):
         img = torch.from_numpy(img).float()
         target = torch.from_numpy(target).float()
         return img, target 
+
+
+def cohen_aug(img):
+    # Follow https://arxiv.org/pdf/2002.02497.pdf, page 4
+    # "Data augmentation was used to improve generalization.  According to best results inCohen et al. (2019) (and replicated by us) 
+    # each image was rotated up to 45 degrees, translatedup to 15% and scaled larger of smaller up to 10%"
+    aug_ = A.Compose([
+        A.ShiftScaleRotate(p=1.0, shift_limit=0.25, rotate_limit=45, scale_limit=0.1),
+        A.HorizontalFlip(p=0.5),
+    ])
+    return aug_(image=img[0])["image"].reshape(img.shape)
  

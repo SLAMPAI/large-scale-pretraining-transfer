@@ -147,6 +147,7 @@ def build_dataloader(config):
             num_workers=workers,
             sampler=train_sampler,
             shuffle=train_sampler is None,
+            multiprocessing_context="forkserver",
         )
         val_loader = backend_cls(
             val_dataset,
@@ -154,6 +155,7 @@ def build_dataloader(config):
             num_workers=workers,
             sampler=val_sampler,
             shuffle=False,
+            multiprocessing_context="forkserver",
         )
     else:
         raise ValueError("Cannot recognize dataloader setup.")

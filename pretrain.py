@@ -26,6 +26,7 @@ try:
     #From: https://github.com/NVIDIA/apex/blob/master/examples/imagenet/main_amp.py
     from apex import amp
 except ImportError:
+    # Apex (for mixed precision) is not mandatory, as the native mixed precision of PyTorch can be used
     pass
 
 def train(epoch):
@@ -54,7 +55,7 @@ def train(epoch):
             optimizer.zero_grad()
             # Split data into sub-batches of size batch_size
             for i in range(0, len(data), local_batch_size):
-                with autocast():
+                with autocast():#for mixed precision (in case it is used)
                     data_batch = data[i:i + local_batch_size]
                     target_batch = target[i:i + local_batch_size]
                     output = model(data_batch)
@@ -95,11 +96,13 @@ def train(epoch):
 
 def compute_loss(output, target_batch):
     if target_batch.ndim == 2:
+        #multi-label setting
         mask = ~torch.isnan(target_batch)
         output = output[mask]
         target_batch = target_batch[mask]
         loss = F.binary_cross_entropy_with_logits(output, target_batch)
     else:
+        #single-label multi-class setting
         loss = F.cross_entropy(output, target_batch)
     return loss
 
@@ -128,6 +131,7 @@ def validate(epoch):
     return val_loss.avg.item(), val_accuracy.avg.item()
 
 class DummyAutoCast():
+    # dummy autocast class for single precision
     def __enter__(self):
         pass
     def __exit__(self, *args, **kwargs):
@@ -135,13 +139,15 @@ class DummyAutoCast():
 
 
 def accuracy(output, target):
-    # get the index of the max log-probability
     if target.ndim == 1:
+        #single label multi-class setting
+        # get the index of the max log-probability
         pred = output.max(1, keepdim=True)[1]
         return pred.eq(target.view_as(pred)).cpu().float().mean()
     elif target.ndim == 2:
-        #multi-label classification
-        mask = ~torch.isnan(target)
+        #multi-label setting
+        mask = ~torch.isnan(target) # in medical data, some targets are nan, ignore them
+        #output is expected to be logits, so apply sigmoid and threshold at 0.5 by default
         pred = ((output[mask].sigmoid()) > 0.5).float()
         target = target[mask]
         return (pred==target).float().mean()
@@ -193,6 +199,7 @@ if __name__ == '__main__':
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
     parser.add_argument('--config-file', default="config_example.yaml", type=str, required=True)
+    parser.add_argument('--log-dir', default=None, type=str, required=False)
     parser.add_argument('--resume', action='store_true',  default=False)
     parser.add_argument('--no-cuda', action='store_true', default=False)
 
@@ -205,14 +212,21 @@ if __name__ == '__main__':
     if hvd.rank() == 0:
         print(f"Number of workers: {hvd.size()}")
         print(f"Effective batch size: {config.optim.train_local_batch_size * config.optim.gradient_accumulate * hvd.size()}")
-    if config.logging.log_dir:
+    
+    # logs_dir is the logging directory
+    # if provided in args or config file, use it.
+    # if not, use the directory logs/<model_name> as the default
+    # where <model_name> is extracted from the config file name
+    if args.log_dir:
+        log_dir = args.log_dir
+    elif config.logging.log_dir:
         log_dir = config.logging.log_dir
     else:
         name = os.path.basename(args.config_file).split(".")[0]
         log_dir = os.path.join("logs", name)
-    # else:
-        # log_dir = os.path.join("logs", datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
     os.makedirs(log_dir, exist_ok=True)
+
+    # for reproduction, put the confg file in logging directory
     shutil.copy(args.config_file, os.path.join(log_dir, "config.yaml"))
     if not config.logging.checkpoint_format:
         config.logging.checkpoint_format = "./checkpoint-{epoch}.pth.tar"
@@ -280,9 +294,14 @@ if __name__ == '__main__':
     hvd.broadcast_optimizer_state(optimizer, root_rank=0)
     if config.mixed_precision.enabled and config.mixed_precision.backend == "apex":
         model, optimizer = amp.initialize(model, optimizer, opt_level="O2")
+
+    # used for computing throughput
     nb_images = 0
     start = time.time()
     
+
+    # load the current best val loss
+    # if it does not exist, put it to inf by default
     best_val_loss_path = os.path.join(log_dir,"best_val_loss")
     if os.path.exists(best_val_loss_path):
         best_val_loss = float(open(best_val_loss_path).read())
@@ -291,20 +310,25 @@ if __name__ == '__main__':
 
     for epoch in range(resume_from_epoch, config.optim.epochs):
         if hasattr(train_loader, "sampler"):
+            # for sharding
             if hasattr(train_loader.sampler, "set_epoch"):
                 train_loader.sampler.set_epoch(epoch)
+        # train for one epoch
         train(epoch)
         if config.logging.validate:
             val_loss, val_acc = validate(epoch)
             if hvd.rank() == 0 and (val_loss < best_val_loss):
+                # save the best model
                 print(f"Improved val loss from {best_val_loss} to {val_loss}")
                 best_val_loss = val_loss
                 with open(best_val_loss_path, "w") as fd:
                     fd.write(str(best_val_loss))
                 save_best(epoch, log_dir)
         if config.logging.save_checkpoint:
+            # save the model at each epoch
             save_checkpoint(epoch, log_dir)
     if hvd.rank() == 0:
+        # show throughput
         duration = time.time() - start
         nb_images_processed = nb_images* hvd.size()
         print(f"total images: {nb_images_processed}")
