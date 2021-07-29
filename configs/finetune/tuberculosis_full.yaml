@@ -1,8 +1,8 @@
 data:
   backend: native
   type: tuberculosis
-  train_dir: datasets/Tuberculosis_dataset/ChinaSet_AllFiles/ChinaSet_AllFiles/CXR_png,/p/project/covidnetx/datasets/Tuberculosis_dataset/Montgomery/MontgomerySet/CXR_png
-  val_dir: datasets/Tuberculosis_dataset/ChinaSet_AllFiles/ChinaSet_AllFiles/CXR_png,/p/project/covidnetx/datasets/Tuberculosis_dataset/Montgomery/MontgomerySet/CXR_png
+  train_dir: datasets/Tuberculosis_dataset/ChinaSet_AllFiles/ChinaSet_AllFiles/CXR_png,datasets/Tuberculosis_dataset/Montgomery/MontgomerySet/CXR_png
+  val_dir: datasets/Tuberculosis_dataset/ChinaSet_AllFiles/ChinaSet_AllFiles/CXR_png,datasets/Tuberculosis_dataset/Montgomery/MontgomerySet/CXR_png
   workers: 8
   nb_classes: 2
   augmentation:
