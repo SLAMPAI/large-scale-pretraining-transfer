@@ -1,6 +1,11 @@
 # Effect of large-scale pre-training on full and few-shot transfer learning for natural and medical images
 *by Mehdi Cherti, Jenia Jitsev* [\[arXiv:2106.00116\]](https://arxiv.org/abs/2106.00116)
 
+[![Open In Colab][colab-badge]][colab-notebook]
+
+[colab-notebook]: <https://colab.research.google.com/drive/1alh4O7fFHsqSYsiEkT6Bux8d0-P05kIo?usp=sharing>
+[colab-badge]: <https://colab.research.google.com/assets/colab-badge.svg>
+
 ## Introduction
 
 In this repository, we provide the code for reproducing the experiments on large-scale pre-training and transfer learning for the paper *"Effect of large-scale pre-training on full and few-shot transfer learning for natural and medical images"* ([arXiv:2106.00116](https://arxiv.org/abs/2106.00116)).
@@ -144,6 +149,8 @@ The file `configs/finetune/tuberculosis_full.yaml` contains the hyper-parameters
 
 Inside the log directory `tuberculosis_finetuning`, you will find a log file and a tensorboard file
 that you can use to visualize the learning curve with different metrics.
+
+You can also find a fine-tuning example with Tuberculosis in the [Colab Notebook](https://colab.research.google.com/drive/1alh4O7fFHsqSYsiEkT6Bux8d0-P05kIo?usp=sharing)
 
 #### New dataset?
 
