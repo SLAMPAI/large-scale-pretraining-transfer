@@ -118,7 +118,7 @@ You can check the other config files in `configs/` for other pre-training experi
 ### Pre-trained models
 
 We provide models with pre-trained weights different network sizes (ResNet-50x1, ResNet-152x4) and on various source datasets of different type and size.
-You can download all the models from <https://bit.ly/34MYsBc>.
+All models are available at <https://bit.ly/34MYsBc>.
 
 Each model has its own folder, named following the template `<DATASET>_<MODEL>`,
 e.g., `chexpert_mimic_nih_padchest_bit152x4` is a ResNet152x4 pre-trained on
@@ -126,7 +126,6 @@ the concatenation of CheXpert, MIMIC-CXR, NIH Chest-Xray and PadChest.
 
 You can use the script `scripts/download_model.sh` to download a pre-trained model,
 by providing its name.
-
 For instance, to download `chexpert_mimic_nih_padchest_bit152x4`, you can use:
 
 `bash scripts/download_model.sh chexpert_mimic_nih_padchest_bit152x4`
