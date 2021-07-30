@@ -123,9 +123,13 @@ You can download all the models from <https://bit.ly/34MYsBc>.
 Each model has its own folder, named following the template `<DATASET>_<MODEL>`,
 e.g., `chexpert_mimic_nih_padchest_bit152x4` is a ResNet152x4 pre-trained on
 the concatenation of CheXpert, MIMIC-CXR, NIH Chest-Xray and PadChest.
-You can select one or several folders and download them
-directly. Once the archive is downloaded please extract it in the folder
-`pretrained_models`.
+
+You can use the script `scripts/download_model.sh` to download a pre-trained model,
+by providing its name.
+
+For instance, to download `chexpert_mimic_nih_padchest_bit152x4`, you can use:
+
+`bash scripts/download_model.sh chexpert_mimic_nih_padchest_bit152x4`
 
 ### Fine-tuning transfer experiments
 
