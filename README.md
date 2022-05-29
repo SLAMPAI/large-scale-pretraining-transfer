@@ -1,6 +1,10 @@
 # Effect of large-scale pre-training on full and few-shot transfer learning for natural and medical images
 *by Mehdi Cherti, Jenia Jitsev* [\[arXiv:2106.00116\]](https://arxiv.org/abs/2106.00116)
 
+[Short version of the paper](http://www.cse.cuhk.edu.hk/~qdou/public/medneurips2021/21_effect_scale_transfer_final_camera_MedNeurIPS2021.pdf) accepted at [Medical Imaging Meets NeurIPS 2021 Workshop](https://sites.google.com/view/med-neurips-2021/)
+
+Longer version of the paper accepted at [IEEE International Joint Conference on Neural Networks 2022](https://wcci2022.org/)
+
 [![Open In Colab][colab-badge]][colab-notebook]
 
 [colab-notebook]: <https://colab.research.google.com/drive/1alh4O7fFHsqSYsiEkT6Bux8d0-P05kIo?usp=sharing>
